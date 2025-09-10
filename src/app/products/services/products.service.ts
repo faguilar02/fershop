@@ -5,7 +5,7 @@ import {
   ProductsResponse,
 } from '@products/interfaces/products-response.interface';
 import { ProductMapper } from '@products/mapper/product-images.mapper';
-import { delay, map, Observable, tap } from 'rxjs';
+import { delay, map, Observable, of, tap } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 const baseUrl = environment.baseUrl;
@@ -20,33 +20,48 @@ interface Options {
 export class ProductsService {
   private http = inject(HttpClient);
 
- getProducts(options: Options): Observable<ProductsResponse> {
+  private productsCache = new Map<string, ProductsResponse>();
+  private productCache = new Map<string, Product>();
+
+  getProducts(options: Options): Observable<ProductsResponse> {
     const { limit = 9, offset = 0, gender = '' } = options ?? {};
+
+    const key = `${limit}-${offset}-${gender}`;
+
+    if (this.productsCache.has(key)) {
+      return of(this.productsCache.get(key)!);
+    }
 
     return this.http
       .get<ProductsResponse>(`${baseUrl}/products`, {
         params: { limit, offset, gender },
       })
       .pipe(
-        map(res => ({
+        map((res) => ({
           ...res,
-          products: res.products.map(product => ({
+          products: res.products.map((product) => ({
             ...product,
             images: ProductMapper.mapImgPathsToImgsUrls(product.images),
           })),
         })),
-        tap((resp) => console.log(resp))
+        tap((resp) => console.log(resp)),
+        tap((resp) => this.productsCache.set(key, resp))
       );
   }
 
   getProductByIdSlug(idSlug: string): Observable<Product> {
-    return this.http.get<Product>(`${baseUrl}/products/${idSlug}`).pipe(
+    const key = `${idSlug}`;
 
+    if (this.productCache.has(key)) {
+      return of(this.productCache.get(key)!);
+    }
+    return this.http.get<Product>(`${baseUrl}/products/${idSlug}`).pipe(
       map((product) => ({
         ...product,
         images: ProductMapper.mapImgPathsToImgsUrls(product.images),
       })),
-      tap((product) => console.log(product))
+      tap((product) => console.log(product)),
+      tap((product) => this.productCache.set(key, product))
     );
   }
 }
