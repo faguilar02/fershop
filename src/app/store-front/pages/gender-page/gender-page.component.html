@@ -1,12 +1,26 @@
-<h1 class="text-3xl font-bold font-montserrat">Todos los productos <span class="text-accent">{{gender()}}</span></h1>
+<h1 class="text-3xl font-bold font-montserrat">
+  Todos los productos <span class="text-accent">{{ gender() }}</span>
+</h1>
 <h2 class="text-xl mb-5">Para todos los gustos</h2>
+
+@if (genderProductsResource.isLoading()) {
+<div class="flex justify-center items-center h-screen">
+  <span class="loading loading-spinner loading-lg"></span>
+</div>
+}@else{
 
 <div
   class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-2 gap-3"
 >
-  @for (product of genderProductsResource.value(); track $index) {
+  @for (product of genderProductsResource.value()?.products; track $index) {
   <product-card [product]="product" />
   } @empty {
   <h1>No hay productos</h1>
   }
 </div>
+
+<app-pagination
+  [pages]="genderProductsResource.value()?.pages ?? 0"
+  [currentPage]="this.currentPage()"
+></app-pagination>
+}

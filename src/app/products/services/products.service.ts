@@ -20,23 +20,22 @@ interface Options {
 export class ProductsService {
   private http = inject(HttpClient);
 
-  getProducts(options: Options): Observable<Product[]> {
-    const { limit = 9, offset = 9, gender = '' } = options;
+ getProducts(options: Options): Observable<ProductsResponse> {
+    const { limit = 9, offset = 0, gender = '' } = options ?? {};
+
     return this.http
       .get<ProductsResponse>(`${baseUrl}/products`, {
-        params: {
-          limit,
-          offset,
-          gender,
-        },
+        params: { limit, offset, gender },
       })
       .pipe(
-        map(({ products }) =>
-          products.map((product) => ({
+        map(res => ({
+          ...res,
+          products: res.products.map(product => ({
             ...product,
             images: ProductMapper.mapImgPathsToImgsUrls(product.images),
-          }))
-        )
+          })),
+        })),
+        tap((resp) => console.log(resp))
       );
   }
 
