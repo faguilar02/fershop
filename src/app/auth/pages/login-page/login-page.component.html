@@ -1,0 +1,74 @@
+<form
+  class="gap-2 flex flex-col"
+  [formGroup]="loginForm"
+  (ngSubmit)="onSubmit()"
+>
+  <fieldset class="fieldset bg-slate-800 rounded-box w-xs p-4">
+    <!-- Email -->
+    <div class="relative">
+      <input
+        type="email"
+        class="input pl-10 w-full"
+        placeholder="Email"
+        formControlName="email"
+      />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none z-10"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path
+          d="M12 13.5c-.33 0-.65-.1-.92-.3L3.5 7.85A1 1 0 0 1 4.42 6h15.16a1 1 0 0 1 .92 1.85l-7.58 5.35c-.27.2-.59.3-.92.3Z"
+        />
+        <path
+          d="M20 18H4a1 1 0 0 1-1-1V8.41l8.36 5.91a2 2 0 0 0 2.28 0L21 8.41V17a1 1 0 0 1-1 1Z"
+        />
+      </svg>
+    </div>
+
+    <!-- Password -->
+    <div class="relative mt-1">
+      <input
+        type="password"
+        class="input pl-10 w-full"
+        placeholder="Password"
+        formControlName="password"
+      />
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none z-10"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+      >
+        <path
+          d="M12 17a2 2 0 0 0 2-2a2 2 0 0 0-2-2a2 2 0 0 0-2 2a2 2 0 0 0 2 2m6-9a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V10a2 2 0 0 1 2-2h1V6a5 5 0 0 1 5-5a5 5 0 0 1 5 5v2zm-6-5a3 3 0 0 0-3 3v2h6V6a3 3 0 0 0-3-3"
+        />
+      </svg>
+    </div>
+
+    <button class="btn btn-secondary w-full mt-1 text-[15px] font-bold">
+      Login
+    </button>
+
+    <p class="text-slate-200 text-center mt-2 font-semibold">
+      ¿No tienes cuenta?
+
+      <a
+        routerLink="/auth/register"
+        class="text-secondary cursor-pointer hover:underline hover:font-semibold"
+        >Crea una aquí</a
+      >
+    </p>
+  </fieldset>
+</form>
+
+@if (hasError()) {
+
+  <div role="alert" class="alert alert-error animate-fadeIn fixed top-5 right-5 w-auto">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 shrink-0 stroke-current" fill="none" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+    <span>Por favor revisar la información ingresada</span>
+  </div>
+}

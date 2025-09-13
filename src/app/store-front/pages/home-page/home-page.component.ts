@@ -4,6 +4,7 @@ import { ProductsService } from '@products/services/products.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { PaginationService } from '@shared/components/pagination/pagination.service';
+import { AuthService } from '@auth/services/auth.service';
 
 @Component({
   selector: 'app-home-page',
@@ -13,7 +14,10 @@ import { PaginationService } from '@shared/components/pagination/pagination.serv
 export default class HomePageComponent {
   private productsService = inject(ProductsService);
   paginationService = inject(PaginationService);
-  currentPage = computed( () => this.paginationService.currentPage())
+  currentPage = computed(() => this.paginationService.currentPage());
+  authService = inject(AuthService);
+
+  ;
   // route = inject(ActivatedRoute);
   // currentPage = toSignal(
   //   this.route.queryParamMap.pipe(
