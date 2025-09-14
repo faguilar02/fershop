@@ -16,8 +16,6 @@ export default class HomePageComponent {
   paginationService = inject(PaginationService);
   currentPage = computed(() => this.paginationService.currentPage());
   authService = inject(AuthService);
-
-  ;
   // route = inject(ActivatedRoute);
   // currentPage = toSignal(
   //   this.route.queryParamMap.pipe(

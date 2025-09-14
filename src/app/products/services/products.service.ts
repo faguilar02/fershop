@@ -37,13 +37,6 @@ export class ProductsService {
         params: { limit, offset, gender },
       })
       .pipe(
-        map((res) => ({
-          ...res,
-          products: res.products.map((product) => ({
-            ...product,
-            images: ProductMapper.mapImgPathsToImgsUrls(product.images),
-          })),
-        })),
         tap((resp) => console.log(resp)),
         tap((resp) => this.productsCache.set(key, resp))
       );
@@ -56,12 +49,21 @@ export class ProductsService {
       return of(this.productCache.get(key)!);
     }
     return this.http.get<Product>(`${baseUrl}/products/${idSlug}`).pipe(
-      map((product) => ({
-        ...product,
-        images: ProductMapper.mapImgPathsToImgsUrls(product.images),
-      })),
       tap((product) => console.log(product)),
       tap((product) => this.productCache.set(key, product))
     );
+  }
+
+  getProductById(id: string): Observable<Product> {
+    if (this.productCache.has(id)) {
+      return of(this.productCache.get(id)!);
+    }
+    return this.http
+      .get<Product>(`${baseUrl}/products/${id}`)
+      .pipe(tap((product) => this.productCache.set(id, product)));
+  }
+
+  updateProduct(productLike: Partial<Product>) {
+    console.log('actualizando producto');
   }
 }
