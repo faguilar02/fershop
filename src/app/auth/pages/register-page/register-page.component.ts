@@ -8,7 +8,7 @@ import { AuthService } from '@auth/services/auth.service';
   imports: [ReactiveFormsModule],
   templateUrl: './register-page.component.html',
 })
-export class RegisterPageComponent {
+export default class RegisterPageComponent {
   fb = inject(FormBuilder);
   authService = inject(AuthService);
   router = inject(Router);

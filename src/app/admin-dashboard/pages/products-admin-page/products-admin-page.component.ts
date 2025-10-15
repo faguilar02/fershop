@@ -11,14 +11,14 @@ import { ProductsTableComponent } from '@products/components/products-table/prod
 import { PaginationService } from '@shared/components/pagination/pagination.service';
 import { PaginationComponent } from '@shared/components/pagination/pagination.component';
 import { ProductsService } from '@products/services/products.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-products-admin-page',
-  imports: [ProductsTableComponent, PaginationComponent],
+  imports: [ProductsTableComponent, PaginationComponent, RouterLink],
   templateUrl: './products-admin-page.component.html',
 })
-export class ProductsAdminPageComponent {
+export default class ProductsAdminPageComponent {
   productsService = inject(ProductsService);
   router = inject(Router);
   paginationService = inject(PaginationService);
@@ -42,7 +42,7 @@ export class ProductsAdminPageComponent {
 
     this.router.navigate([], {
       queryParams: { page: 1 },
-      queryParamsHandling: 'merge'
+      queryParamsHandling: 'merge',
     });
   }
 }

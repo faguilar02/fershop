@@ -138,6 +138,17 @@
 
     <product-carousel [images]="product().images" />
 
-    <input type="file" class="file-input file-input-bordered w-full mt-4" />
+    <input
+      type="file"
+      multiple
+      class="file-input file-input-bordered w-full mt-4"
+    />
   </div>
 </form>
+
+@if (wasSaved()) {
+
+<div class="alert alert-success fixed top-4 right-5 w-auto animate-fadeIn">
+  <span>Cambios guardados correctamente</span>
+</div>
+}

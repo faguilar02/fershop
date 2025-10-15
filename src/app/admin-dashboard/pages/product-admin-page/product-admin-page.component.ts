@@ -10,7 +10,7 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
   imports: [ProductDetailsComponent],
   templateUrl: './product-admin-page.component.html',
 })
-export class ProductAdminPageComponent {
+export default class ProductAdminPageComponent {
   activatedRoute = inject(ActivatedRoute);
   router = inject(Router);
   productsService = inject(ProductsService);

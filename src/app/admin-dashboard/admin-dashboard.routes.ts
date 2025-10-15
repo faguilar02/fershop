@@ -1,7 +1,5 @@
 import { Routes } from '@angular/router';
 import { AdminDashboardLayoutComponent } from './layouts/admin-dashboard-layout/admin-dashboard-layout.component';
-import { ProductAdminPageComponent } from './pages/product-admin-page/product-admin-page.component';
-import { ProductsAdminPageComponent } from './pages/products-admin-page/products-admin-page.component';
 
 export const adminDashboardRoutes: Routes = [
   {
@@ -10,11 +8,13 @@ export const adminDashboardRoutes: Routes = [
     children: [
       {
         path: 'products',
-        component: ProductsAdminPageComponent,
+        loadComponent: () =>
+          import('./pages/products-admin-page/products-admin-page.component'),
       },
       {
         path: 'product/:id',
-        component: ProductAdminPageComponent,
+        loadComponent: () =>
+          import('./pages/product-admin-page/product-admin-page.component'),
       },
       {
         path: '**',
