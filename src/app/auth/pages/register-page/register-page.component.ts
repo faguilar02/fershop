@@ -12,25 +12,15 @@ export default class RegisterPageComponent {
   fb = inject(FormBuilder);
   authService = inject(AuthService);
   router = inject(Router);
-  hasError = signal<boolean>(false);
+  errorMessages = signal<string[]>([]);
 
   registerForm = this.fb.group({
-    fullName: ['', [Validators.required, Validators.minLength(1)]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    fullName: [''],
+    email: [''],
+    password: [''],
   });
 
   onSubmit() {
-    if (this.registerForm.invalid) {
-      this.hasError.set(true);
-
-      setTimeout(() => {
-        this.hasError.set(false);
-      }, 2000);
-
-      return;
-    }
-
     const {
       fullName = '',
       email = '',
@@ -39,17 +29,17 @@ export default class RegisterPageComponent {
 
     return this.authService
       .register(fullName!, email!, password!)
-      .subscribe((isRegisterSuccess) => {
-        if (isRegisterSuccess) {
+      .subscribe((result) => {
+        if (result.success) {
           this.router.navigateByUrl('/');
           return;
         }
 
-        this.hasError.set(true);
+        this.errorMessages.set(result.errors || ['Error desconocido']);
 
         setTimeout(() => {
-          this.hasError.set(false);
-        }, 2000);
+          this.errorMessages.set([]);
+        }, 5000);
       });
   }
 }

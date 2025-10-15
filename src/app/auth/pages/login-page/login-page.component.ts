@@ -12,36 +12,27 @@ export default class LoginPageComponent {
   fb = inject(FormBuilder);
   authService = inject(AuthService);
   router = inject(Router);
-  hasError = signal(false);
+  errorMessages = signal<string[]>([]);
   isPosting = signal(false);
 
   loginForm = this.fb.group({
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    email: [''],
+    password: [''],
   });
 
   onSubmit() {
-    if (this.loginForm.invalid) {
-      this.hasError.set(true);
-      setTimeout(() => {
-        this.hasError.set(false);
-      }, 2000);
-
-      return;
-    }
-
     const { email = '', password = '' } = this.loginForm.value;
 
-    this.authService.login(email!, password!).subscribe((isAuthenticated) => {
-      if (isAuthenticated) {
+    this.authService.login(email!, password!).subscribe((result) => {
+      if (result.success) {
         this.router.navigateByUrl('/');
         return;
       }
 
-      this.hasError.set(true);
+      this.errorMessages.set(result.errors || ['Error desconocido']);
       setTimeout(() => {
-        this.hasError.set(false);
-      }, 2000);
+        this.errorMessages.set([]);
+      }, 5000);
     });
   }
 }
