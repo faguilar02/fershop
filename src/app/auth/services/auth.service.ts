@@ -51,7 +51,6 @@ export class AuthService {
         fullName,
         email,
         password,
-        roles: ['user', 'super', 'admin'], // Todos los usuarios se crean con todos los roles
       })
       .pipe(
         map((resp) => this.handleAuthSuccess(resp)),
